@@ -3,39 +3,35 @@ import java.util.LinkedList;
 
 public class Stack
 {
-	private Queue<Integer> q1, q2;
+	private Queue<Integer> q;
 	
 	public Stack()
 	{
-		q1 = new LinkedList<>();
-		q2 = new LinkedList<>();
+		q = new LinkedList<>();
 	}
 	
 	public void push(int x)
 	{
-		q2.add(x);
-		while(!q1.isEmpty())
+		q.add(x);
+		for(x = q.size(); x > 1; x--)
 		{
-			q2.add(q1.remove());
+			q.add(q.remove());
 		}
-		Queue<Integer> temp = q1;
-		q1 = q2;
-		q2 = temp;
 	}
 	
 	public int pop()
 	{
-		if(q1.isEmpty())
+		if(q.isEmpty())
 		{
 			System.out.println("No element in the stack");
 			return -1;
 		}
-		return q1.remove();
+		return q.remove();
 	}
 
 	public void display()
 	{
-		for(int x : q1)
+		for(int x : q)
 		{
 			System.out.print(x + " ");
 		}
@@ -49,6 +45,9 @@ public class Stack
 		s.push(6);
 		s.push(7);
 		s.display();
+		s.pop();
+		s.pop();
+		s.pop();
 		s.pop();
 		s.display();
 		s.push(10);
