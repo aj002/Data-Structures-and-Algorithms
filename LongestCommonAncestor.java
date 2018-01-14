@@ -1,6 +1,8 @@
+import java.util.Stack;
+
 public class Node
 {
-	private int data;
+	public int data;
 	public Node left;
 	public Node right;
 
@@ -19,14 +21,48 @@ public class Node
 		inorder(rt.right);
 	}
 
-	public static Node LCA(Node a, Node b)
+	public static Node LCA(Node rt, Node a, Node b)
 	{
 		if(a == null)	return b;
 		if(b == null)	return a;
-		int path_a[] = LCAUtil(a);
-		int path_b[] = LCAUtil(b);
-		for(int )
+		Stack<Node> path_a = pathTo(rt, a);
+		Stack<Node> path_b = pathTo(rt, b);
+		Node lca = null;
+		while(!path_a.empty() && !path_b.empty())
+		{
+			Node x = path_a.pop();
+			Node y = path_b.pop();
+			if(x == y)
+			{
+				lca = x;
+			}
+		}
+		return lca;
 	}
+
+	private static Stack<Node> pathTo(Node rt, Node a)
+	{
+		if(rt == null)	return null;
+		if(rt == a)
+		{
+			Stack<Node> s = new Stack<>();
+			s.push(a);
+			return s;
+		}
+		Stack<Node> l = pathTo(rt.left, a);
+		Stack<Node> r = pathTo(rt.right, a);
+		if(l != null)
+		{
+			l.push(rt);
+			return l;
+		}
+		if(r != null)
+		{
+			r.push(rt);
+		}
+		return r;
+	}
+
 	public static void main(String[] args)
 	{
 		Node rt = getNode(1);
@@ -37,6 +73,8 @@ public class Node
 		rt.right.left = getNode(6);
 		rt.right.right = getNode(7);
 		inorder(rt);
-		System.out.println(LCA(rt.left.left, rt.left.right).data);
+		System.out.println();
+		Node lca = LCA(rt, rt.right.left, rt.right);
+		System.out.println(lca.data);
 	}
 }
